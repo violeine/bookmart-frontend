@@ -1,40 +1,14 @@
-<!--<template>
-  <form action="#">
-    <div class="container">
-      <div class="flex flex-col">
-        <label for="username" class="mb-1">
-          username
-          <input
-            type="text"
-            name="username"
-            id="username"
-            class="border border-gray-500 rounded-lg"
-          />
-        </label>
-        <label for="password">
-          password
-          <input
-            type="password"
-            name="password"
-            id="password"
-            class="border border-gray-500 rounded-lg"
-          />
-        </label>
-      </div>
-      <button class="rounded-sm bg-gray-400 p-2 py-1">login</button>
-    </div>
-  </form>
-</template>     -->
+
 <template>
   <div class="w-full max-w-xs container">
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">email</label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          placeholder="Username"
+          id="email"
+          type="email"
+          placeholder="email"
         />
       </div>
       <div class="mb-6">
@@ -64,3 +38,6 @@
     </form>
   </div>
 </template>
+<script>
+export default {};
+</script>
