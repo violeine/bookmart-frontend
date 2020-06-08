@@ -9,7 +9,9 @@
           type="email"
           v-model="email"
           placeholder="your email here"
+          required
         />
+        <span class="text-red-500 text-xs italic" v-show="!email&&toggleSubmit">this is a required fields</span>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
@@ -22,6 +24,7 @@
           required
         />
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
+        <span v-show="!password&&toggleSubmit" class="text-red-500 text-xs italic">this is a required fields</span>
       </div>
       <div class="mb-6">
         <label
@@ -37,6 +40,7 @@
           placeholder="******************"
           required
         />
+        <span v-show="!retypePassword&&toggleSubmit" class="text-red-500 text-xs italic">this is a required fields</span>
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <button
@@ -58,7 +62,8 @@ export default {
     return {
       email: "",
       password: "",
-      retypePassword: ""
+      retypePassword: "",
+      toggleSubmit:false
     };
   },
   computed: {
@@ -73,9 +78,9 @@ export default {
   },
   methods: {
     submit: function() {
-      //graphql here ?
-      console.log(this.email, this.password, this.retypePassword);
       //check unfilled input and mark red ??
+      this.toggleSubmit=true;
+      this.email && this.password && this.retypePassword &&  this.retypePassword==this.password && console.log("submitting form with", this.email, this.password, this.retypePassword);
     }
   }
 };
