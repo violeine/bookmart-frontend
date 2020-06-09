@@ -5,11 +5,14 @@
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">email</label>
         <input
+
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="email"
           type="email"
           placeholder="email"
+          v-model="email"
         />
+        <span class="text-red-500 text-xs italic" v-show="!email&&toggleSubmit">this is a required fields</span>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
@@ -18,13 +21,16 @@
           id="password"
           type="password"
           placeholder="******************"
+          v-model="password"
         />
+        <span class="text-red-500 text-xs italic" v-show="!password&&toggleSubmit">this is a required fields</span>
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <div class="flex items-center justify-between">
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
+          @click="submit()"
         >Sign In</button>
         <a
           class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
@@ -39,5 +45,38 @@
   </div>
 </template>
 <script>
-export default {};
+import gql from "graphql-tag";
+import {onLogin} from "../vue-apollo";
+export default {
+  data:function(){
+    return {
+      email:"",
+      password:"",
+      toggleSubmit:false
+    }
+  },
+  methods:{
+    submit: function(){
+      //toggle the submit to check validation
+      this.toggleSubmit=true;
+     // validate stuff, if statisfy all then process to login
+      this.email&&this.password&&
+      this.$apollo.mutate({
+        mutation:gql` mutation ($input:LoginInput){
+          login(input:$input){
+            access_token
+          }
+        }`,
+        variables: {
+          input:{
+          username:this.email,
+          password:this.password
+          }
+        }
+      }).then((data)=>{console.log(data);
+      onLogin(this.$apolloProvider.defaultClient, data.data.login.access_token);
+      this.$router.push("/");}).catch(err=>console.log(err));
+    }
+  }
+};
 </script>

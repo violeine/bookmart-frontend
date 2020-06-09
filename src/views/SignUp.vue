@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 export default {
   data: function() {
     return {
@@ -80,7 +81,25 @@ export default {
     submit: function() {
       //check unfilled input and mark red ??
       this.toggleSubmit=true;
-      this.email && this.password && this.retypePassword &&  this.retypePassword==this.password && console.log("submitting form with", this.email, this.password, this.retypePassword);
+      this.email && this.password && this.retypePassword &&  this.retypePassword==this.password && this.$apollo.mutate(
+          {
+            mutation:gql`mutation($input:RegisterInput){
+              register(input:$input){
+                tokens{
+                  access_token               
+                }
+              }
+            }`,
+            variables:{
+              input:{
+                email:this.email,
+                password:this.password,
+                password_confirmation:this.retypePassword,
+                name:this.email.split("@")[0],
+              }
+            }
+          }
+      ).then(data=>console.log("signup successfull with ", data));
     }
   }
 };
