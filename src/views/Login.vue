@@ -1,18 +1,19 @@
-
 <template>
   <div class="w-full max-w-xs container">
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">email</label>
         <input
-
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="email"
           type="email"
           placeholder="email"
           v-model="email"
         />
-        <span class="text-red-500 text-xs italic" v-show="!email&&toggleSubmit">this is a required fields</span>
+        <span
+          class="text-red-500 text-xs italic"
+          v-show="!email&&toggleSubmit"
+        >this is a required fields</span>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
@@ -23,7 +24,10 @@
           placeholder="******************"
           v-model="password"
         />
-        <span class="text-red-500 text-xs italic" v-show="!password&&toggleSubmit">this is a required fields</span>
+        <span
+          class="text-red-500 text-xs italic"
+          v-show="!password&&toggleSubmit"
+        >this is a required fields</span>
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <div class="flex items-center justify-between">
@@ -46,36 +50,49 @@
 </template>
 <script>
 import gql from "graphql-tag";
-import {onLogin} from "../vue-apollo";
+import { onLogin } from "../vue-apollo";
 export default {
-  data:function(){
+  data: function() {
     return {
-      email:"",
-      password:"",
-      toggleSubmit:false
-    }
+      email: "",
+      password: "",
+      toggleSubmit: false
+    };
   },
-  methods:{
-    submit: function(){
+  methods: {
+    submit: function() {
       //toggle the submit to check validation
-      this.toggleSubmit=true;
-     // validate stuff, if statisfy all then process to login
-      this.email&&this.password&&
-      this.$apollo.mutate({
-        mutation:gql` mutation ($input:LoginInput){
-          login(input:$input){
-            access_token
-          }
-        }`,
-        variables: {
-          input:{
-          username:this.email,
-          password:this.password
-          }
-        }
-      }).then((data)=>{console.log(data);
-      onLogin(this.$apolloProvider.defaultClient, data.data.login.access_token);
-      this.$router.push("/");}).catch(err=>console.log(err));
+      this.toggleSubmit = true;
+      // validate stuff, if statisfy all then process to login
+      this.email &&
+        this.password &&
+        this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation($input: LoginInput) {
+                login(input: $input) {
+                  access_token
+                }
+              }
+            `,
+            variables: {
+              input: {
+                username: this.email,
+                password: this.password
+              }
+            }
+          })
+          .then(data => {
+            console.log(data);
+            this.$root.$data.isLogin = true;
+            console.log(this.$root.$data.isLogin);
+            onLogin(
+              this.$apolloProvider.defaultClient,
+              data.data.login.access_token
+            );
+            this.$router.push("/");
+          })
+          .catch(err => console.log(err));
     }
   }
 };

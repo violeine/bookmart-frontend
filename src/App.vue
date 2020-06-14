@@ -3,8 +3,15 @@
     <div id="nav">
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>|
-      <router-link to="/login">Login</router-link>|
-      <router-link to="/signup">Sign up </router-link>
+      <span v-if="login">
+        <router-link to="/user">User</router-link>|
+        <router-link to="/submitbook">Submit Book</router-link>|
+        <a href="#" class="router-link-excal-active" @click="logout">Log out</a>
+      </span>
+      <span v-else>
+        <router-link to="/login">Login</router-link>|
+        <router-link to="/signup">Sign up</router-link>
+      </span>
     </div>
     <router-view />
   </div>
@@ -32,3 +39,20 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import { onLogout } from "./vue-apollo";
+export default {
+  computed: {
+    login: function() {
+      return this.$root.$data.isLogin;
+    }
+  },
+  methods: {
+    logout: function() {
+      onLogout(this.$apolloProvider.defaultClient);
+      this.$root.$data.isLogin = false;
+    }
+  }
+};
+</script>
