@@ -52,6 +52,7 @@ export default {
     logout: function() {
       onLogout(this.$apolloProvider.defaultClient);
       this.$root.$data.isLogin = false;
+      this.$root.$data.userData = null;
     }
   }
 };

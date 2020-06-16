@@ -14,5 +14,6 @@ new Vue({
   render: (h) => h(App),
   data: {
     isLogin: false,
+    userData: null,
   },
 }).$mount("#app");

@@ -31,8 +31,14 @@ const routes = [
   },
   {
     path: "/submitbook",
-    name: "SubmitBokk",
+    name: "SubmitBook",
     component: () => import("../views/SubmitBook.vue"),
+  },
+  {
+    path: "/book/:id",
+    name: "book",
+    component: () => import("../views/Book.vue"),
+    props: true,
   },
 ];
 

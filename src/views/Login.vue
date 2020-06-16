@@ -72,6 +72,9 @@ export default {
               mutation($input: LoginInput) {
                 login(input: $input) {
                   access_token
+                  user {
+                    id
+                  }
                 }
               }
             `,
@@ -85,12 +88,13 @@ export default {
           .then(data => {
             console.log(data);
             this.$root.$data.isLogin = true;
+            this.$root.$data.userData = data.data.login.user.id;
             console.log(this.$root.$data.isLogin);
             onLogin(
               this.$apolloProvider.defaultClient,
               data.data.login.access_token
             );
-            this.$router.push("/");
+            this.$router.go(-1);
           })
           .catch(err => console.log(err));
     }

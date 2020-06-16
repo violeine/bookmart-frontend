@@ -9,7 +9,7 @@
       >{{category.name}}</option>
     </select>
     <button v-if="categoriesSelected.length>1" class="block mx-auto" @click="change">{{filterBy}}</button>
-    <div v-for="book in renderedBook" :key="book.id">
+    <router-link tag="div" v-for="book in renderedBook" :key="book.id" :to="`/book/${book.id}`">
       <span class="text-gray-700 text-md block">{{book.name}}</span>
       <span class="text-red-400 text-xs block">{{book.author}}</span>
       <div>
@@ -20,7 +20,7 @@
         >{{category.name}}</span>
       </div>
       <hr />
-    </div>
+    </router-link>
   </div>
 </template>
 <script>
