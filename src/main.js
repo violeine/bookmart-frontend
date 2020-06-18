@@ -13,7 +13,7 @@ new Vue({
   store,
   render: (h) => h(App),
   data: {
-    isLogin: false,
-    userData: null,
+    isLogin: localStorage.getItem("apollo-token") ? true : false,
+    userData: localStorage.getItem("userData"),
   },
 }).$mount("#app");

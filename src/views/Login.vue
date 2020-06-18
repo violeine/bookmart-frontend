@@ -89,6 +89,7 @@ export default {
             console.log(data);
             this.$root.$data.isLogin = true;
             this.$root.$data.userData = data.data.login.user.id;
+            localStorage.setItem("userData", data.data.login.user.id);
             console.log(this.$root.$data.isLogin);
             onLogin(
               this.$apolloProvider.defaultClient,
