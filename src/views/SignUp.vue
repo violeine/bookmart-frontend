@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full max-w-xs container">
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <div class="w-full max-w-md container">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-32">
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">email</label>
         <input
@@ -11,7 +11,10 @@
           placeholder="your email here"
           required
         />
-        <span class="text-red-500 text-xs italic" v-show="!email&&toggleSubmit">this is a required fields</span>
+        <span
+          class="text-red-500 text-xs italic"
+          v-show="!email&&toggleSubmit"
+        >this is a required fields</span>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
@@ -24,7 +27,10 @@
           required
         />
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
-        <span v-show="!password&&toggleSubmit" class="text-red-500 text-xs italic">this is a required fields</span>
+        <span
+          v-show="!password&&toggleSubmit"
+          class="text-red-500 text-xs italic"
+        >this is a required fields</span>
       </div>
       <div class="mb-6">
         <label
@@ -40,7 +46,10 @@
           placeholder="******************"
           required
         />
-        <span v-show="!retypePassword&&toggleSubmit" class="text-red-500 text-xs italic">this is a required fields</span>
+        <span
+          v-show="!retypePassword&&toggleSubmit"
+          class="text-red-500 text-xs italic"
+        >this is a required fields</span>
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <button
@@ -64,7 +73,7 @@ export default {
       email: "",
       password: "",
       retypePassword: "",
-      toggleSubmit:false
+      toggleSubmit: false
     };
   },
   computed: {
@@ -80,26 +89,32 @@ export default {
   methods: {
     submit: function() {
       //check unfilled input and mark red ??
-      this.toggleSubmit=true;
-      this.email && this.password && this.retypePassword &&  this.retypePassword==this.password && this.$apollo.mutate(
-          {
-            mutation:gql`mutation($input:RegisterInput){
-              register(input:$input){
-                tokens{
-                  access_token               
+      this.toggleSubmit = true;
+      this.email &&
+        this.password &&
+        this.retypePassword &&
+        this.retypePassword == this.password &&
+        this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation($input: RegisterInput) {
+                register(input: $input) {
+                  tokens {
+                    access_token
+                  }
                 }
               }
-            }`,
-            variables:{
-              input:{
-                email:this.email,
-                password:this.password,
-                password_confirmation:this.retypePassword,
-                name:this.email.split("@")[0],
+            `,
+            variables: {
+              input: {
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.retypePassword,
+                name: this.email.split("@")[0]
               }
             }
-          }
-      ).then(data=>console.log("signup successfull with ", data));
+          })
+          .then(data => console.log("signup successfull with ", data));
     }
   }
 };

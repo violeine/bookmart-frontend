@@ -1,37 +1,79 @@
 <template>
-  <div>
-    <select name="categories" v-model="categoriesSelected" multiple id>
-      <option value="all">All books</option>
-      <option
-        v-for="category in categories"
-        :key="category.id"
-        :value="category.id"
-      >{{category.name}}</option>
-    </select>
-    <button v-if="categoriesSelected.length>1" class="block mx-auto" @click="change">{{filterBy}}</button>
-    <router-link tag="div" v-for="book in renderedBook" :key="book.id" :to="`/book/${book.id}`">
-      <span class="text-gray-700 text-md block">{{book.name}}</span>
-      <span class="text-red-400 text-xs block">{{book.author}}</span>
-      <span
-        v-if="login && me && me.includes(book.id)"
-        class="block text-green-400"
-      >You own this book</span>
-      <button
-        @click.stop="add(book.id)"
-        v-else-if="login && me"
-        class="block text-teal-500 mx-auto"
-      >Add this to your library</button>
-      <div>
+  <div class="flex flex-wrap">
+    <div class="left">
+      <div class="h-full flex flex-col bg-gray-700">
         <span
-          v-for="category in book.categories"
-          :key="category.id"
-          class="text-xs text-blue-300 inline-block mr-1"
-        >{{category.name}}</span>
+          v-if="categoriesSelected.length>1"
+          class="text-orange-500 px-3 pt-3 ml-3"
+          @click="change"
+        >Filter with: {{filterBy}}</span>
+        <select
+          class="block appearance-none w-full outline-none h-full bg-transparent overflow-y-hidden mb-5"
+          name="categories"
+          v-model="categoriesSelected"
+          multiple
+          id
+        >
+          <option value="all" class="opt">All books</option>
+
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+            class="opt"
+          >{{category.name}}</option>
+        </select>
       </div>
-      <hr />
-    </router-link>
+    </div>
+
+    <div class="right pb-5">
+      <router-link
+        tag="div"
+        class="book"
+        v-for="book in renderedBook"
+        :key="book.id"
+        :to="`/book/${book.id}`"
+      >
+        <span class="text-indigo-600 text-sm block">{{book.name}}</span>
+        <span class="text-red-500 text-xs block mb-1">{{book.author}}</span>
+        <img :src="book.image" alt="book img" class="h-64 block mx-auto" />
+        <div>
+          <span
+            v-for="category in book.categories"
+            :key="category.id"
+            class="text-xs text-blue-500 inline-block mr-1"
+          >{{category.name}}</span>
+        </div>
+        <span
+          v-if="login && me && me.includes(book.id)"
+          class="block text-green-600 mx-auto px-1 py-1"
+        >You own this book</span>
+        <button
+          @click.stop="add(book.id)"
+          v-else-if="login && me"
+          class="inline-block text-gray-300 mx-auto px-1 py-1 border border-transparent rounded-md bg-teal-400"
+        >Add to your library</button>
+      </router-link>
+    </div>
   </div>
 </template>
+<style scoped>
+.left {
+  @apply w-1/4 p-5;
+}
+.right {
+  @apply flex flex-wrap w-3/4 pt-5;
+}
+.book {
+  @apply w-1/3 mb-4 text-center;
+}
+.book:hover {
+  @apply w-1/3 mb-3 text-center shadow;
+}
+.opt {
+  @apply block p-3 m-3 text-lg text-indigo-500;
+}
+</style>
 <script>
 import gql from "graphql-tag";
 export default {
@@ -107,6 +149,7 @@ export default {
                 id
                 name
                 author
+                image
                 categories {
                   id
                   name
@@ -121,6 +164,7 @@ export default {
                 name
                 id
                 author
+                image
                 categories {
                   id
                   name

@@ -11,12 +11,14 @@
     <hr />
     <div v-if="yourBooks.length>0" class="user-books">
       Your books :PogChamp: :thumbsup:
-      <div class="book" v-for="book in yourBooks" :key="book.id">
-        <span class="text-lg text-blue-600 block">{{book.name}}</span>
-        <button
-          @click="remove(book.id)"
+      <div tag="div" class="book" v-for="book in yourBooks" :key="book.id">
+        <router-link tag="div" :to="`/book/${book.id}`">
+          <span class="text-lg text-blue-600 block">{{book.name}}</span>
+        </router-link>
+        <a
+          @click.stop="remove(book.id)"
           class="border-red-600 border"
-        >this button to disown your book</button>
+        >this button to disown your book</a>
       </div>
     </div>
     <p v-else>You don't have any book</p>
