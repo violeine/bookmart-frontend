@@ -1,30 +1,24 @@
 <template>
-  <div class="user  p-5">
-    <div
-      class="flex justify-center py-5 shadow-lg rounded-md bg-gray-300 mb-5 px-2 "
-    >
+  <div class="user p-5">
+    <div class="flex justify-center py-5 shadow-lg rounded-md bg-gray-300 mb-5 px-2">
       <div>
         <img
           :src="
             `https://ui-avatars.com/api/?name=${me.name}&size=512&rounded=true`
           "
           alt="avatar"
-          class="mx-auto w-1/2 shadow-lg rounded-full "
+          class="mx-auto w-1/2 shadow-lg rounded-full"
         />
       </div>
       <div class="w-1/2 py-8">
-        <span class="block text-5xl text-indigo-600 font-semibold">{{
+        <span class="block text-5xl text-indigo-600 font-semibold">
+          {{
           me.name
-        }}</span>
-        <span class="block -mt-4 text-lg text-indigo-300 mb-2"
-          >Email: {{ me.email }}</span
-        >
-        <span class="block text-base text-indigo-300 mb-2"
-          >Book Count: {{ yourBooks.length }}</span
-        >
-        <span class="block text-base text-indigo-300"
-          >Review Count: {{ yourReview.length }}</span
-        >
+          }}
+        </span>
+        <span class="block -mt-2 text-lg text-indigo-300 mb-2">Email: {{ me.email }}</span>
+        <span class="block text-base text-indigo-300 mb-2">Book Count: {{ yourBooks.length }}</span>
+        <span class="block text-base text-indigo-300">Review Count: {{ yourReview.length }}</span>
       </div>
     </div>
     <div v-if="yourBooks.length > 0" class="px-2 py-5">
@@ -41,8 +35,7 @@
         <a
           @click.stop="remove(book.id)"
           class="ml-auto py-2 px-1 bg-red-600 rounded-lg text-gray-400"
-          >Disown</a
-        >
+        >Disown</a>
       </div>
     </div>
     <p class="text-2xl text-blue-700 pl-5" v-else>You don't have any book</p>
@@ -61,16 +54,16 @@ import gql from "graphql-tag";
 export default {
   data: function() {
     return {
-      me: null,
+      me: null
     };
   },
   computed: {
     yourReview: function() {
-      return this.me.books.filter((el) => el.pivot.review);
+      return this.me.books.filter(el => el.pivot.review);
     },
     yourBooks: function() {
-      return this.me.books.filter((el) => el.pivot.owned);
-    },
+      return this.me.books.filter(el => el.pivot.owned);
+    }
   },
   apollo: {
     me: {
@@ -91,8 +84,8 @@ export default {
             }
           }
         }
-      `,
-    },
+      `
+    }
   },
   methods: {
     remove: function(id) {
@@ -109,16 +102,22 @@ export default {
             input: {
               id: this.$root.userData,
               books: {
-                syncWithoutDetaching: [{ id: id, owned: false }],
-              },
-            },
-          },
+                syncWithoutDetaching: [{ id: id, owned: false }]
+              }
+            }
+          }
         })
-        .then((data) => {
+        .then(data => {
           console.log(data);
+          this.$notify({
+            group: "noti",
+            type: "success",
+            title: "Important message",
+            text: "Disown successfully"
+          });
           this.$apollo.queries.me.refetch();
         });
-    },
-  },
+    }
+  }
 };
 </script>

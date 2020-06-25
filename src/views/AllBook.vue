@@ -6,8 +6,7 @@
           v-if="categoriesSelected.length > 1"
           class="text-orange-500 px-3 pt-3 ml-3"
           @click="change"
-          >Filter with: {{ filterBy }}</span
-        >
+        >Filter with: {{ filterBy }}</span>
         <select
           class="block appearance-none w-full outline-none h-full bg-transparent overflow-y-hidden mb-5"
           name="categories"
@@ -22,8 +21,7 @@
             :key="category.id"
             :value="category.id"
             class="opt"
-            >{{ category.name }}</option
-          >
+          >{{ category.name }}</option>
         </select>
       </div>
     </div>
@@ -44,21 +42,17 @@
             v-for="category in book.categories"
             :key="category.id"
             class="text-xs text-blue-500 inline-block mr-1"
-            >{{ category.name }}</span
-          >
+          >{{ category.name }}</span>
         </div>
         <span
           v-if="login && me && me.includes(book.id)"
           class="block text-green-600 mx-auto px-1 py-1"
-          >You own this book</span
-        >
+        >You own this book</span>
         <button
           @click.stop="add(book.id)"
           v-else-if="login && me"
           class="inline-block text-gray-300 mx-auto px-1 py-1 border border-transparent rounded-md bg-teal-400"
-        >
-          Add to your library
-        </button>
+        >Add to your library</button>
       </router-link>
     </div>
   </div>
@@ -89,7 +83,7 @@ export default {
       categories: [],
       categoriesSelected: ["all"],
       filterBy: "all",
-      me: undefined,
+      me: undefined
     };
   },
   computed: {
@@ -97,14 +91,14 @@ export default {
       if (this.filterBy == "all") {
         return this.books;
       } else if (this.filterBy == "and") {
-        return this.books.filter((el) => el.isIncludeAll);
+        return this.books.filter(el => el.isIncludeAll);
       } else {
         return this.books;
       }
     },
     login: function() {
       return this.$root.$data.isLogin;
-    },
+    }
   },
   methods: {
     add: function(id) {
@@ -121,25 +115,40 @@ export default {
             input: {
               id: this.$root.userData,
               books: {
-                syncWithoutDetaching: [{ id: id, owned: true }],
-              },
-            },
-          },
+                syncWithoutDetaching: [{ id: id, owned: true }]
+              }
+            }
+          }
         })
-        .then((data) => {
+        .then(data => {
           console.log(data);
+          this.$notify({
+            group: "noti",
+            type: "success",
+            title: "important message",
+            text: "Add book successfully"
+          });
           this.$apollo.queries.me.refetch();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$notify({
+            group: "noti",
+            type: "error",
+            title: "Important message",
+            text: "Oops something wrong"
+          });
         });
     },
     checkStrict: function(array1, array2) {
       //check array1 inside array2
       console.log("is ", array1, " inside ", array2);
-      return array1.every((el) => array2.includes(el));
+      return array1.every(el => array2.includes(el));
     },
     change: function() {
       if (this.filterBy == "and") this.filterBy = "or";
       else this.filterBy = "and";
-    },
+    }
   },
 
   apollo: {
@@ -187,7 +196,7 @@ export default {
           )
         ) {
           return {
-            id: this.categoriesSelected.map((el) => Number(el)),
+            id: this.categoriesSelected.map(el => Number(el))
           };
         }
       },
@@ -201,25 +210,25 @@ export default {
         } else {
           this.filterBy = "and";
           return data.filterBookByCategory
-            .map((book) => {
+            .map(book => {
               return {
                 ...book,
-                categoriesArray: book.categories.map((el) => Number(el.id)),
+                categoriesArray: book.categories.map(el => Number(el.id))
               };
             })
-            .map((el) => {
+            .map(el => {
               var isIncludeAll = this.checkStrict(
-                this.categoriesSelected.map((el) => Number(el)),
+                this.categoriesSelected.map(el => Number(el)),
                 el.categoriesArray
               );
               console.log("a", isIncludeAll);
               return {
                 ...el,
-                isIncludeAll,
+                isIncludeAll
               };
             });
         }
-      },
+      }
     },
     categories: gql`
       query {
@@ -253,9 +262,9 @@ export default {
         console.log(this.login);
         return !this.login;
       },
-      update: (data) =>
-        data.me.books.filter((el) => el.pivot.owned).map((el) => el.id),
-    },
-  },
+      update: data =>
+        data.me.books.filter(el => el.pivot.owned).map(el => el.id)
+    }
+  }
 };
 </script>

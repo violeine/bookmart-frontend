@@ -67,6 +67,7 @@
 
 <script>
 import gql from "graphql-tag";
+import { onLogin } from "../vue-apollo";
 export default {
   data: function() {
     return {
@@ -101,6 +102,9 @@ export default {
                 register(input: $input) {
                   tokens {
                     access_token
+                    user {
+                      id
+                    }
                   }
                 }
               }
@@ -114,7 +118,23 @@ export default {
               }
             }
           })
-          .then(data => console.log("signup successfull with ", data));
+          .then(data => {
+            this.$root.$data.isLogin = true;
+            this.$root.$data.userData = data.data.login.user.id;
+            localStorage.setItem("userData", data.data.login.user.id);
+            console.log(this.$root.$data.isLogin);
+            onLogin(
+              this.$apolloProvider.defaultClient,
+              data.data.login.access_token
+            );
+            this.$notify({
+              group: "noti",
+              type: "success",
+              title: "important message",
+              text: "Login successfully"
+            });
+            this.$router.go(-1);
+          });
     }
   }
 };

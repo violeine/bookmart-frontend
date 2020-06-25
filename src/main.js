@@ -7,6 +7,7 @@ import Notifications from "vue-notification";
 import "./assets/tailwind.css";
 
 Vue.config.productionTip = false;
+Vue.use(Notifications);
 
 new Vue({
   router,
@@ -18,4 +19,3 @@ new Vue({
     userData: localStorage.getItem("userData"),
   },
 }).$mount("#app");
-Vue.use(Notifications);

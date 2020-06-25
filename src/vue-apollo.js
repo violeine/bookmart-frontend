@@ -14,7 +14,8 @@ const AUTH_TOKEN = "apollo-token";
 // Http endpoint
 //const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://171.247.186.96:8000/graphql'
 const httpEndpoint =
-  process.env.VUE_APP_GRAPHQL_HTTP || "http://violpi.lan:8000/graphql";
+  process.env.VUE_APP_GRAPHQL_HTTP ||
+  "http://violeine.freemyip.com:8000/graphql";
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||

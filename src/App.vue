@@ -2,40 +2,31 @@
   <div id="app" class="container bg-gray-400 shadow-md">
     <div id="nav" class="flex pt-3 bg-green-300">
       <div class="ml-6">
-        <router-link class="text-lg text-indigo-600" tag="div" to="/"
-          >Bookmart</router-link
-        >
+        <router-link class="text-lg text-indigo-600" tag="div" to="/">Bookmart</router-link>
       </div>
       <div class="ml-auto">
         <span v-if="login">
-          <router-link class="inline-block mr-4 nav-button" to="/user"
-            >User</router-link
-          >
+          <router-link class="inline-block mr-4 nav-button" to="/user">User</router-link>
           <router-link
             tag="div"
             to="/submitbook"
             class="nav-button inline-block mr-4 cursor-pointer"
-            >Submit Book</router-link
-          >
+          >Submit Book</router-link>
           <a
             href="#"
             class="router-link-exact-active nav-button inline-block mr-4"
             @click="logout"
-            >Log out</a
-          >
+          >Log out</a>
         </span>
         <span v-else>
-          <router-link class="inline-block mr-4 nav-button" to="/login"
-            >Login</router-link
-          >
-          <router-link to="/signup" class="nav-button mr-4"
-            >Sign up</router-link
-          >
+          <router-link class="inline-block mr-4 nav-button" to="/login">Login</router-link>
+          <router-link to="/signup" class="nav-button mr-4">Sign up</router-link>
         </span>
       </div>
     </div>
 
     <router-view id="content" class="box-border" />
+    <notifications group="noti" />
   </div>
 </template>
 
@@ -60,7 +51,7 @@ export default {
   computed: {
     login: function() {
       return this.$root.$data.isLogin;
-    },
+    }
   },
   methods: {
     logout: function() {
@@ -68,8 +59,14 @@ export default {
       this.$root.$data.isLogin = false;
       this.$root.$data.userData = null;
       localStorage.removeItem("userData");
+      this.$notify({
+        group: "noti",
+        type: "success",
+        title: "Important message",
+        text: "Logout successfully"
+      });
       this.$router.push("/");
-    },
-  },
+    }
+  }
 };
 </script>

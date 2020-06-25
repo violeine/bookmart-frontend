@@ -2,9 +2,7 @@
   <div class="w-full pt-32 max-w-md container">
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
-          >Book title</label
-        >
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Book title</label>
         <input
           type="text"
           v-model="name"
@@ -12,9 +10,7 @@
         />
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2 " for="name"
-          >Category</label
-        >
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Category</label>
         <select
           name="Category"
           v-model="selectedCategory"
@@ -25,16 +21,14 @@
             v-for="category in queriedCategory"
             :key="category.id"
             :value="category"
-            >{{ category.name }}</option
-          >
+          >{{ category.name }}</option>
         </select>
       </div>
       <div class="mb-4">
         <label
           class="block text-gray-700 text-sm font-bold mb-2"
           for="newCategory"
-          >Dont have category? add one!!</label
-        >
+        >Dont have category? add one!!</label>
         <input
           type="text"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight"
@@ -43,9 +37,7 @@
         />
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="author"
-          >Author</label
-        >
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Author</label>
         <input
           type="text"
           v-model="author"
@@ -53,21 +45,15 @@
         />
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
-          >img</label
-        >
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Img</label>
         <input
-          type="tet"
+          type="text"
+          v-model="img"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight"
         />
       </div>
 
-      <button
-        class="block ml-auto rounded px-4 py-2 bg-green-500"
-        @click.prevent="submit"
-      >
-        submit
-      </button>
+      <button class="block ml-auto rounded px-4 py-2 bg-green-500" @click.prevent="submit">submit</button>
     </form>
   </div>
 </template>
@@ -78,9 +64,11 @@ export default {
     return {
       name: "",
       author: "",
+      img: "",
       selectedCategory: [],
       queriedCategory: [],
-      newCategory: "",
+      books: [],
+      newCategory: ""
     };
   },
   apollo: {
@@ -93,12 +81,28 @@ export default {
           }
         }
       `,
-      update: (data) => {
+      update: data => {
         return data.categories.map(function(el) {
           return { id: el.id, name: el.name };
         });
-      },
+      }
     },
+    books: {
+      query: gql`
+        query {
+          books {
+            id
+            name
+            author
+            image
+            categories {
+              id
+              name
+            }
+          }
+        }
+      `
+    }
   },
   methods: {
     submit: function() {
@@ -120,24 +124,35 @@ export default {
             input: {
               name: this.name,
               author: this.author,
+              image: this.img,
               categories: {
-                upsert: this.selectedCategory,
-              },
-            },
-          },
+                upsert: this.selectedCategory
+              }
+            }
+          }
         })
-        .then((data) => console.log(data))
-        .catch((err) => console.warn(err));
+        .then(data => {
+          this.$notify({
+            group: "noti",
+            type: "success",
+            title: "important message",
+            text: "Submit book successfully"
+          });
+          this.$apollo.queries.books.refetch();
+          this.$apollo.queries.queriedCategory.refetch();
+          console.log(data);
+        })
+        .catch(err => console.warn(err));
     },
     addCategory: function(e) {
       if (e.keyCode == 13 && this.newCategory != "") {
         this.queriedCategory.push({
           name: this.newCategory,
-          id: `${this.queriedCategory.length + 1}`,
+          id: `${this.queriedCategory.length + 1}`
         });
         this.newCategory = "";
       }
-    },
-  },
+    }
+  }
 };
 </script>

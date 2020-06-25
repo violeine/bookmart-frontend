@@ -109,6 +109,12 @@ export default {
         })
         .then(data => {
           console.log(data);
+          this.$notify({
+            group: "noti",
+            type: "success",
+            title: "important message",
+            text: "Add book successfully"
+          });
           this.$apollo.queries.me.refetch();
         });
     },
