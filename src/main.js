@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import { createProvider } from "./vue-apollo";
 import store from "./store";
+import Notifications from "vue-notification";
 import "./assets/tailwind.css";
 
 Vue.config.productionTip = false;
@@ -17,3 +18,4 @@ new Vue({
     userData: localStorage.getItem("userData"),
   },
 }).$mount("#app");
+Vue.use(Notifications);

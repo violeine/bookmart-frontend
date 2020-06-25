@@ -1,33 +1,56 @@
 <template>
-  <div class="user">
-    <h1>this is an user page</h1>
-    <div class="user-name">Your user name : {{me.name}}</div>
-    <img
-      :src="`https://ui-avatars.com/api/?name=${me.name}`"
-      alt="avatar"
-      class="user-avatar mx-auto"
-    />
-    <div class="user-email">Your email: {{me.email}}</div>
-    <hr />
-    <div v-if="yourBooks.length>0" class="user-books">
-      Your books :PogChamp: :thumbsup:
-      <div tag="div" class="book" v-for="book in yourBooks" :key="book.id">
+  <div class="user  p-5">
+    <div
+      class="flex justify-center py-5 shadow-lg rounded-md bg-gray-300 mb-5 px-2 "
+    >
+      <div>
+        <img
+          :src="
+            `https://ui-avatars.com/api/?name=${me.name}&size=512&rounded=true`
+          "
+          alt="avatar"
+          class="mx-auto w-1/2 shadow-lg rounded-full "
+        />
+      </div>
+      <div class="w-1/2 py-8">
+        <span class="block text-5xl text-indigo-600 font-semibold">{{
+          me.name
+        }}</span>
+        <span class="block -mt-4 text-lg text-indigo-300 mb-2"
+          >Email: {{ me.email }}</span
+        >
+        <span class="block text-base text-indigo-300 mb-2"
+          >Book Count: {{ yourBooks.length }}</span
+        >
+        <span class="block text-base text-indigo-300"
+          >Review Count: {{ yourReview.length }}</span
+        >
+      </div>
+    </div>
+    <div v-if="yourBooks.length > 0" class="px-2 py-5">
+      <h1 class="text-2xl text-blue-700 pl-5">Your books</h1>
+      <div
+        tag="div"
+        class="flex py-3 px-2 border-b border-gray-500"
+        v-for="book in yourBooks"
+        :key="book.id"
+      >
         <router-link tag="div" :to="`/book/${book.id}`">
-          <span class="text-lg text-blue-600 block">{{book.name}}</span>
+          <span class="text-lg text-blue-600 block py-2">{{ book.name }}</span>
         </router-link>
         <a
           @click.stop="remove(book.id)"
-          class="border-red-600 border"
-        >this button to disown your book</a>
+          class="ml-auto py-2 px-1 bg-red-600 rounded-lg text-gray-400"
+          >Disown</a
+        >
       </div>
     </div>
-    <p v-else>You don't have any book</p>
-    <hr />
-    <div v-if="yourReview.length>0" class="user-books">
-      Your reviews
+    <p class="text-2xl text-blue-700 pl-5" v-else>You don't have any book</p>
+    <div v-if="yourReview.length > 0" class="px-2 py-5">
+      <h1 class="text-2xl text-blue-700 pl-5">Your reviews</h1>
       <div class="review" v-for="review in yourReview" :key="review.id">
-        <span class="text-lg text-blue-600">{{review.name}}</span>
-        <p class="review">{{review.pivot.review}}</p>
+        <span class="text-lg text-blue-600 block py-2">{{ review.name }}</span>
+        <p class="pl-5 text-lg text-gray-600">{{ review.pivot.review }}</p>
       </div>
     </div>
     <p v-else>You don't have any book</p>
@@ -38,16 +61,16 @@ import gql from "graphql-tag";
 export default {
   data: function() {
     return {
-      me: null
+      me: null,
     };
   },
   computed: {
     yourReview: function() {
-      return this.me.books.filter(el => el.pivot.review);
+      return this.me.books.filter((el) => el.pivot.review);
     },
     yourBooks: function() {
-      return this.me.books.filter(el => el.pivot.owned);
-    }
+      return this.me.books.filter((el) => el.pivot.owned);
+    },
   },
   apollo: {
     me: {
@@ -68,8 +91,8 @@ export default {
             }
           }
         }
-      `
-    }
+      `,
+    },
   },
   methods: {
     remove: function(id) {
@@ -86,16 +109,16 @@ export default {
             input: {
               id: this.$root.userData,
               books: {
-                syncWithoutDetaching: [{ id: id, owned: false }]
-              }
-            }
-          }
+                syncWithoutDetaching: [{ id: id, owned: false }],
+              },
+            },
+          },
         })
-        .then(data => {
+        .then((data) => {
           console.log(data);
           this.$apollo.queries.me.refetch();
         });
-    }
-  }
+    },
+  },
 };
 </script>

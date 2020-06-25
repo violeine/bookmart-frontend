@@ -1,8 +1,10 @@
 <template>
-  <div class="w-full max-w-md container">
-    <form class="bg-white shadow-md mt-32 rounded px-8 pt-6 pb-8">
+  <div class="w-full max-w-md pt-32 container">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8">
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">email</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email"
+          >email</label
+        >
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="email"
@@ -12,11 +14,14 @@
         />
         <span
           class="text-red-500 text-xs italic"
-          v-show="!email&&toggleSubmit"
-        >this is a required fields</span>
+          v-show="!email && toggleSubmit"
+          >this is a required fields</span
+        >
       </div>
       <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="password"
+          >Password</label
+        >
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
@@ -26,8 +31,9 @@
         />
         <span
           class="text-red-500 text-xs italic"
-          v-show="!password&&toggleSubmit"
-        >this is a required fields</span>
+          v-show="!password && toggleSubmit"
+          >this is a required fields</span
+        >
         <!--<p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <div class="flex items-center justify-between">
@@ -35,16 +41,20 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           @click="submit()"
-        >Sign In</button>
+        >
+          Sign In
+        </button>
         <a
           class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
           href="#"
-        >Forgot Password?</a>
+          >Forgot Password?</a
+        >
       </div>
       <router-link
         to="/signup"
         class="text-center text-gray-500 text-xs block mt-5"
-      >Don't have an account, Sign Up now</router-link>
+        >Don't have an account, Sign Up now</router-link
+      >
     </form>
   </div>
 </template>
@@ -56,7 +66,7 @@ export default {
     return {
       email: "",
       password: "",
-      toggleSubmit: false
+      toggleSubmit: false,
     };
   },
   methods: {
@@ -81,11 +91,11 @@ export default {
             variables: {
               input: {
                 username: this.email,
-                password: this.password
-              }
-            }
+                password: this.password,
+              },
+            },
           })
-          .then(data => {
+          .then((data) => {
             console.log(data);
             this.$root.$data.isLogin = true;
             this.$root.$data.userData = data.data.login.user.id;
@@ -97,8 +107,8 @@ export default {
             );
             this.$router.go(-1);
           })
-          .catch(err => console.log(err));
-    }
-  }
+          .catch((err) => console.log(err));
+    },
+  },
 };
 </script>
