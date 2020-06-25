@@ -2,7 +2,9 @@
   <div id="app" class="container bg-gray-400 shadow-md">
     <div id="nav" class="flex pt-3 bg-green-300">
       <div class="ml-6">
-        <router-link tag="div" to="/">Home</router-link>
+        <router-link class="text-lg text-indigo-600" tag="div" to="/"
+          >Bookmart</router-link
+        >
       </div>
       <div class="ml-auto">
         <span v-if="login">
