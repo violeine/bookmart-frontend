@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container bg-gray-400 shadow-md">
-    <div id="nav" class="flex pt-3 bg-green-300">
+    <div id="nav" class="flex bg-green-300 py-3">
       <div class="ml-6">
         <router-link class="text-lg text-indigo-600" tag="div" to="/">Bookmart</router-link>
       </div>
@@ -37,9 +37,7 @@
 #app {
   min-height: 100vh;
 }
-#nav {
-  height: 5vh;
-}
+
 #content {
   min-height: 95vh;
 }
