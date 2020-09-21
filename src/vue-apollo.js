@@ -15,7 +15,7 @@ const AUTH_TOKEN = "apollo-token";
 //const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://171.247.186.96:8000/graphql'
 const httpEndpoint =
   process.env.VUE_APP_GRAPHQL_HTTP ||
-  "http://localhost/bookmart-backend/public/graphql";
+  "http://violeine.freemyip.com:8080/graphql";
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||

@@ -2,7 +2,7 @@
   <div id="app" class="container bg-gray-400 shadow-md">
     <div id="nav" class="flex bg-green-300 py-3">
       <div class="ml-6">
-        <router-link class="text-lg text-indigo-600" tag="div" to="/">Bookmart</router-link>
+        <router-link class="text-lg text-indigo-600" tag="div" to="/">Bookmart Nhom 9 azure</router-link>
       </div>
       <div class="ml-auto">
         <span v-if="login">
@@ -44,27 +44,27 @@
 </style>
 
 <script>
-import { onLogout } from "./vue-apollo";
+import { onLogout } from "./vue-apollo"
 export default {
   computed: {
     login: function() {
-      return this.$root.$data.isLogin;
-    }
+      return this.$root.$data.isLogin
+    },
   },
   methods: {
     logout: function() {
-      onLogout(this.$apolloProvider.defaultClient);
-      this.$root.$data.isLogin = false;
-      this.$root.$data.userData = null;
-      localStorage.removeItem("userData");
+      onLogout(this.$apolloProvider.defaultClient)
+      this.$root.$data.isLogin = false
+      this.$root.$data.userData = null
+      localStorage.removeItem("userData")
       this.$notify({
         group: "noti",
         type: "success",
         title: "Important message",
-        text: "Logout successfully"
-      });
-      this.$router.push("/");
-    }
-  }
-};
+        text: "Logout successfully",
+      })
+      this.$router.push("/")
+    },
+  },
+}
 </script>
